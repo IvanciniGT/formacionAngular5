@@ -1,22 +1,28 @@
 
 <h2> {{ this.palabra }} </h2>
-@if (this.significadosDeLaPalabra ){
-    <ol>
-        @for (significado of this.significadosDeLaPalabra.significados; track significado.definicion){
-            <li>
-                <div class="definicion">{{ significado.definicion }}</div>
-                <ul class="modificadores">
-                    @for (modificador of significado.modificadores; track modificador){
-                        <li>{{ modificador }}</li>
-                    }
-                </ul>
-                <div class="ejemplo">{{ significado.ejemplo }}</div>
-            </li>
-        }
-    </ol>
-} @else {
-    <p> Cargando los significados de la palabra... </p>
-}
+@if (this.significadosDeLaPalabra$ | async; as valorRecibido ){
+
+    @if (valorRecibido === undefined){
+        <p> Cargando los significados de la palabra... </p>
+    } @else {
+
+        <ol>
+            @for (significado of valorRecibido.significados; track significado.definicion){
+                <li>
+                    <div class="definicion">{{ significado.definicion }}</div>
+                    <ul class="modificadores">
+                        @for (modificador of significado.modificadores; track modificador){
+                            <li>{{ modificador }}</li>
+                        }
+                    </ul>
+                    <div class="ejemplo">{{ significado.ejemplo }}</div>
+                </li>
+            }
+        </ol>
+    
+    }
+
+} 
 
 <!--
 Track... que leches es eso???

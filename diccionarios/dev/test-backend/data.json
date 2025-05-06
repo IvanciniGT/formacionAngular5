@@ -5,12 +5,12 @@
             "significados": [
                 {
                     "definicion": "Animal de compañía cuadrúpedo",
-                    "ejemplo": "El perro de Lucas se llama Toby"
+                    "ejemplos": ["El perro de Lucas se llama Toby"]
                 },
                 {
                     "definicion": "Persona muy vaga",
                     "modificadores": ["fig"],
-                    "ejemplo": "Estás hecho un perro del 15"
+                    "ejemplos": ["Estás hecho un perro del 15"]
                 }
             ]
          },
@@ -19,12 +19,12 @@
             "significados": [
                 {
                     "definicion": "Fruta dulce y jugosa del melonero",
-                    "ejemplo": "Me encanta comer melón en verano"
+                    "ejemplos": ["Me encanta comer melón en verano"]
                 },
                 {
                     "definicion": "Persona con pocas luces",
                     "modificadores": ["fig"],
-                    "ejemplo": "Eres un melón, no te enteras de nada"
+                    "ejemplos": ["Eres un melón, no te enteras de nada"]
                 }
             ]
          }

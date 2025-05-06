@@ -4,6 +4,8 @@
 import { Injectable } from "@angular/core";
 import { SignificadosDeUnaPalabra } from "../../models/significados.model";
 import { PalabrasService } from "./palabras.service";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 // Dicho de otra forma, trata esta clase como si fuera un SINGLETON
 @Injectable({
@@ -13,6 +15,8 @@ export class PalabrasServiceImpl implements PalabrasService {
 
     private readonly url = 'http://localhost:3000/palabra/';
 
+    constructor(private readonly clienteHttp: HttpClient){}
+/*
     // OPCION 1. API fetch standard de JS
     async getSignificados(palabra?: string): Promise<SignificadosDeUnaPalabra> {
         const promesa = new Promise<SignificadosDeUnaPalabra>( (resolve, reject) => {
@@ -25,7 +29,11 @@ export class PalabrasServiceImpl implements PalabrasService {
         });
         return promesa;
     }   
-
+*/
+    // OPCION 2. API fetch de Angular
+    getSignificados(palabra?: string): Observable<SignificadosDeUnaPalabra> {
+        return this.clienteHttp.get<SignificadosDeUnaPalabra>(this.url + palabra);
+    }
 }
 
 export const providePalabrasService = {

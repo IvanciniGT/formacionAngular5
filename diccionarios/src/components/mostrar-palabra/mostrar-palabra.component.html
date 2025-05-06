@@ -1,14 +1,66 @@
+
 <h2> {{ this.palabra }} </h2>
-<ol>
-    <li>
-        <div class="definicion">Animal de compañía cuadrúpedo</div>
-        <div class="ejemplo">El perro de Lucas se llama Toby</div>
-    </li>
-    <li>
-        <div class="definicion">Persona muy vaga</div>
-        <ul class="modificadores">
-            <li>fig</li>
-        </ul>
-        <div class="ejemplo">Estás hecho un perro</div>
-    </li>
+@if (this.significadosDeLaPalabra ){
+    <ol>
+        @for (significado of this.significadosDeLaPalabra.significados; track significado.definicion){
+            <li>
+                <div class="definicion">{{ significado.definicion }}</div>
+                <ul class="modificadores">
+                    @for (modificador of significado.modificadores; track modificador){
+                        <li>{{ modificador }}</li>
+                    }
+                </ul>
+                <div class="ejemplo">{{ significado.ejemplo }}</div>
+            </li>
+        }
+    </ol>
+} @else {
+    <p> Cargando los significados de la palabra... </p>
+}
+
+<!--
+Track... que leches es eso???
+
+Angular es bastante inteligente cuando renderiza los elementos HTML en el DOM.
+Imaginad que tengo la palabra "perro"... y por ahora el backend no ha respondido.
+Tengo significados en este momento? NO
+Que se renderizaría en ese caso? El título y el párrafo...
+LLegan los significados... y se asignan en la variable de marras: this.significadosDeLaPalabra.
+Angular, al cambiar el valor de la variable, re-renderiza el HTML....
+Pero... re-renderiza TODO el HTML quer hay aquí definido? NO 
+    El título cambia? NO... pue ese lo deja como está. ES SUFICIENTEMENTE LISTO COMO PARA IDENTIFICAR QUE NO HA CAMBIADO.
+    Imaginad que cambia un item de la lista de significados.
+    Se regenera la lista entera? Cada uno de los items? Eso podría ser mucho trabajo.
+    Me interesaría regenerar solo el item que ha cambiado.
+    Como vincula Angular cada <li> con cada objeto que hay en el array de significados.
+
+        definicion1         -> <li>1</li>
+        definicion2         -> <li>2</li>  
+        definicion3         -> <li>3</li>  
+
+
+        Pero llega un listado nuevo de significados.
+
+        definicion1         -> <li>1</li>
+        definicion4         -> <li>4</li>
+        definicion2         -> <li>2</li>
+        definicion3         -> <li>3</li>
+
+-->
+
+<!--
+En versiones antiguas de Angular, en lugar de @if y @for, se usaba *ngIf y *ngFor respectivamente.
+
+<h2> {{ this.palabra }} </h2>
+<ol *ngIf="this.significadosDeLaPalabra">
+            <li *ngFor="let significado of this.significadosDeLaPalabra.significados; trackBy: trackSignificado">
+                <div class="definicion">{{ significado.definicion }}</div>
+                <ul class="modificadores">
+                    @for (modificador of significado.modificadores; track modificador){
+                        <li>{{ modificador }}</li>
+                    }
+                </ul>
+                <div class="ejemplo">{{ significado.ejemplo }}</div>
+            </li>
 </ol>
+-->

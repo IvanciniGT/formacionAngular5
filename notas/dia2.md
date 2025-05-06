@@ -200,3 +200,84 @@ const array = [
 
 
 ---
+
+# Funciones ASINCRONAS !!!!!
+
+En muchos lenguajes de programación, como Java, podemos abrir Hilos (threads) para ejecutar tareas en paralelo.
+Eso se puede hacer en JS? NO
+JS solo ejecuta código en un único hilo (thread). Y ES UNA LIMITACIÓN IMPORTANTE DE JS.
+
+Hay una cosita que se llama WebWorker, que me permite abrir varios Procesos (monohilos) en paralelo, pero eso es un tema que no vamos a ver aquí. Trabajar con comunicaciones de hilos entre procesos es un follón!
+
+Cómo paso datos de un proceso a otro? Los mecanismos permitidos para esto los aporta el SO:
+- Shared Memory
+- Socket
+- File
+- Pipe
+Esto es programación a muy bajo nivel.
+
+Diferente es cuando tenemos hilos paralelos dentro del mismo proceso... ya que entonces esos hilos comparten RAM...
+Y cuando desde un hilo toco una variable, desde otro hilo veo el nuevo valor.... y es fácil.
+Pero la comunicación entre hilos de distintos procesos es otra guerra!
+
+Y en la práctica el uso de WebWorker es muy limitado.
+
+Lo que si tiene javascript es una cosita muy chula que se llama EVENT LOOP.
+Me permite dejar tareas suspendidas en el hilo... de forma que pueda usar ese hilo para otras tareas.
+(Esto por ejemplo no puedo en JAVA)
+
+Para ello, usamos las palabras async y await, que van en combinación con las promesas.
+
+## Comunicaciones asíncronas:
+
+Una comunicación síncrona es aquella que espera la respuesta de el que sea con el que está estableciendo la comunicación.
+ EMISOR ---petición-----> RECEPTOR
+        <---respuesta----
+
+Ese modelo nos es muy útil en muchos escenarios.
+Es lo que ocurre cada vez que invocamos una función de un objeto:
+
+    ```ts
+     class MostrarPalabraComponent{
+        ...
+        ngOnInit(){
+            const significados = this.palabrasService.getSignificados(palabra);
+        }
+     }
+    ```
+Cuando voy as la panadería y pido 2 barras de pan... que hago? Me espero a que me las den o me voy a casa sin ellas?
+    - Me espero ----> SÍNCRONO
+
+Una comunicación asíncrona es aquella que no espera la respuesta de el que sea con el que está estableciendo la comunicación.
+Esa es una opción...
+Otra opción es que espere una respuesta ligera... Y más adelante tenga la respuesta pesada.
+
+Cuando voy a la tintotería a llevar una camisa... me voy con la camisa limpia? Me espero en la puerta a que la laven?
+    NO ME ESPERO... Asíncrona
+    Me Espero alguna respuesta antes de irme la primera vez? TICKET (respuesta ligera)
+
+El ticket es una PROMESA! Podéis llamarlo ticket o podéis llamarlo: VALE POR UNA CAMISA LIMPIA!
+El día de mañana, puedo ir a la tintorería con MI TICKET a reclamar mi camisa limpia.
+
+El ticket significa que el día de mañana ( o dentro de 7 días) me van a dar la camisa limpia? NO
+Me juran que me darán la camisa limpia? NO
+Me lo prometen!
+Los juramentos son SAGRADOS! Las promesas... bueno... no tanto.
+Puede pasar que quemen la camisa! Que roben la tienda y se lleven la camisa... y 1000 cosas más.
+Tengo garantía de que me van a dar la camisa? NO
+Solo me dan una promesa!... que básicamente es decirme.. haremos nuestro mejor esfuerzo por darte esta camisa limpia!
+
+Yo puedo ir el a los días con mi ticket (mi promesa), entregarlo y esperar a que me den la camisa limpia: AWAIT !
+Lo que pasa es que al hacer un await puedo tener 2 resultados:
+- Que me den la camisa limpia (la promesa se ha cumplido)
+- Que no me lleve nada (la promesa no se ha cumplido... si se ha producido un imprevisto -Exception-)
+
+
+Para indicarle a JS (y por ende a TS) que una función devuelve una promesa (se ejecuta de forma asíncrona entregando una respuesta ligera), usamos la palabra ASYNC.
+Esto hace que JS (y por ende TS) al ejecutar esa función, parte del código de la función se ejecute de forma asíncrona: 
+(la limpieza de la camisa) ... mientras que el resto del código de la función se ejecuta de forma síncrona (la entrega del ticket).
+
+JS Deja de lado el código asíncrono... y sigue ejecutando todas las tareas SINCRONAS que tenga pendientes.
+Cuando ha acabado... y solo cuando ha acabado, vuelve al trozo de código asincrono y lo ejecuta.
+
+Una vez ese código ha sido ejecutado, se puede reclamar el valor que devuelva (la camisa) con el ticket (await promesa).

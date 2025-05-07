@@ -1,0 +1,78 @@
+#persona{
+    border: 1px solid black;
+    border-radius: 0.5em;
+    overflow: hidden;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 0.8em;
+}
+#persona.extendido {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+#persona.extendido #foto {
+    grid-column: 1;
+    grid-row: 1/4;
+}
+#persona.extendido #nombre {
+    grid-column: 2;
+    grid-row: 1;
+}
+#persona.extendido #email {
+    grid-column: 2;
+    grid-row: 2;
+}
+#persona.extendido #telefono {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+#persona.extendido > div {
+    padding: 0.25em 1em;
+    white-space: nowrap;
+}
+
+
+#persona.extendido div::before {
+    display: inline-block;
+    padding-right: 0.5em;
+    font-weight: bold;
+    font-size: 0.8em;
+    width: 4.5em;
+}
+
+#persona.extendido #telefono::before {
+    content: "Teléfono:";
+}
+
+#persona.extendido #email::before {
+    content: "Email:";
+}
+
+#persona.extendido #nombre::before {
+    content: "Nombre:";
+}
+
+
+
+
+
+
+#persona.compacto {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: 1fr;
+}
+
+#persona.compacto #foto {
+    grid-column: 1;
+    grid-row: 1;
+    height: 2em;
+}
+#persona.compacto #nombre {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 0.35em 1em;
+}

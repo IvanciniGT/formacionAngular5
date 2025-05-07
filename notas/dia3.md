@@ -132,3 +132,17 @@ App de gestión de expedientes de algo...
                                                             +------------------------------+
                                                           [Seleccionar todos] [Borrar] [Recordar]
 
+
+---
+
+# POR DONDE SIGO?
+
+- [ ] Definir el modelo de persona de frontal
+- [ ] Definir el modelo de persona de backend
+- [ ] Crear el servicio de personas para que trabaje con el backend
+- [ ] Añadir datos falsos de personas a json-server
+
+- [ ] Crear un css
+- [ ] Mejorar el html
+- [ ] Definir la lógica del componente
+

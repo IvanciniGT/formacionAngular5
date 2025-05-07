@@ -2,10 +2,6 @@
 <h2> {{ this.palabra }} </h2>
 @if (this.significadosDeLaPalabra$ | async; as valorRecibido ){
 
-    @if (valorRecibido === undefined){
-        <p> Cargando los significados de la palabra... </p>
-    } @else {
-
         <ol>
             @for (significado of valorRecibido.significados; track significado.definicion){
                 <li>
@@ -20,7 +16,8 @@
             }
         </ol>
     
-    }
+} @else {
+    <p> Cargando los significados de la palabra... </p>
 
 } 
 

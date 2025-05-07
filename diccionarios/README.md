@@ -26,3 +26,26 @@ Después consultará a un backend para obtener los significado de la palabra y l
                 }
             ]
          }
+
+
+
+http://localhost:puerto/api/v1/palabra/perro
+                            ^^
+                            MAJOR
+                            vv
+http://localhost:puerto/api/v2/palabra/perro
+
+# Versionado semántico
+
+v1.2.3
+
+                CUANDO SE INCREMENTAN?
+1 MAJOR         Cuando hay un breaking change: Cambio que no respeta retro-compatibilidad
+                  -> Haber quitado cualquier cosa del api
+                  + Opcionalmente Nuevas funcionalidades
+                  + Opcionalmente Arreglos de bugs
+                  + Opcionalmente pueden venir funcionalidades obsoletas
+2 MINOR         Nueva funcionalidad
+                Marcar una funcionalidad como Obsoleta (Deprecated)
+                    + Opcionalmente pueden venir bugs arreglados
+3 PATCH         Arreglos de bugs

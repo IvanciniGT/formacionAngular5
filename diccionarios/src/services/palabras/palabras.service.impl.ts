@@ -5,7 +5,9 @@ import { Injectable } from "@angular/core";
 import { SignificadosDeUnaPalabra } from "../../models/significados.model";
 import { PalabrasService } from "./palabras.service";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
+import { SignificadosDeUnaPalabraBackend } from "./models/significados.model";
+import { SignificadosMapper } from "./mappers/significados.mapper";
 
 // Dicho de otra forma, trata esta clase como si fuera un SINGLETON
 @Injectable({
@@ -15,7 +17,7 @@ export class PalabrasServiceImpl implements PalabrasService {
 
     private readonly url = 'http://localhost:3000/palabra/';
 
-    constructor(private readonly clienteHttp: HttpClient){}
+    constructor(private readonly clienteHttp: HttpClient, private readonly significadorMapper: SignificadosMapper){}
 /*
     // OPCION 1. API fetch standard de JS
     async getSignificados(palabra?: string): Promise<SignificadosDeUnaPalabra> {
@@ -32,7 +34,13 @@ export class PalabrasServiceImpl implements PalabrasService {
 */
     // OPCION 2. API fetch de Angular
     getSignificados(palabra?: string): Observable<SignificadosDeUnaPalabra> {
-        return this.clienteHttp.get<SignificadosDeUnaPalabra>(this.url + palabra);
+        return this.clienteHttp.get<SignificadosDeUnaPalabraBackend>(this.url + palabra)
+                               .pipe(
+                                      // Aquí transformamos el objeto SignificadosDeUnaPalabraBackend a SignificadosDeUnaPalabra
+                                      // En este caso, como son iguales, no es necesario hacer nada.
+                                      // Si fueran diferentes, habría que hacer un map y transformar el objeto.
+                                      map( (significado) => this.significadorMapper.significadosBackend2significadosFrontal(significado) as SignificadosDeUnaPalabra)
+                               );
     }
 }
 

@@ -3,7 +3,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SignificadosDeUnaPalabra } from '../../models/significados.model';
 import { PalabrasService } from '../../services/palabras/palabras.service'; 
-import { Observable, startWith } from 'rxjs';
+import { first, Observable, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -24,9 +24,10 @@ export class MostrarPalabraComponent implements OnInit {
   constructor(private readonly servicioPalabras: PalabrasService) { }
 
   ngOnInit() {
-    // VAmos a forzar a que el observable tenga un valor inicial "undefined" aunque el backend aun no haya respondido.
+    // Vamos a forzar a que el observable tenga un valor inicial "undefined" aunque el backend aun no haya respondido.
     
     this.significadosDeLaPalabra$ = this.servicioPalabras.getSignificados(this.palabra).pipe(startWith(undefined));
+    // Para probar antes de recibir el valor     .pipe(first());
 
     //this.servicioPalabras.getSignificados(this.palabra).then(significados => this.significadosDeLaPalabra = significados);
 

@@ -1,0 +1,32 @@
+{
+    "palabra": [
+        {
+            "id": "perro",
+            "significados": [
+                {
+                    "definicion": "Animal de compañía cuadrúpedo",
+                    "ejemplos": ["El perro de Lucas se llama Toby"]
+                },
+                {
+                    "definicion": "Persona muy vaga",
+                    "modificadores": ["fig"],
+                    "ejemplos": ["Estás hecho un perro del 15", "Vaya perro que eres"]
+                }
+            ]
+         },
+         {
+            "id": "melón",
+            "significados": [
+                {
+                    "definicion": "Fruta dulce y jugosa del melonero",
+                    "ejemplos": ["Me encanta comer melón en verano"]
+                },
+                {
+                    "definicion": "Persona con pocas luces",
+                    "modificadores": ["fig"],
+                    "ejemplos": ["Eres un melón, no te enteras de nada"]
+                }
+            ]
+         }
+    ]
+}

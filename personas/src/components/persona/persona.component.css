@@ -8,7 +8,7 @@
 }
 #persona.extendido {
     display: grid;
-    grid-template-columns: min-content 1fr;
+    grid-template-columns: min-content 1fr min-content;
     grid-template-rows: 1fr 1fr 1fr;
 }
 
@@ -28,6 +28,10 @@
 #persona.extendido #telefono {
     grid-column: 2;
     grid-row: 3;
+}
+#persona.extendido #compactar {
+    grid-row: 1/4;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/54/54785.png');
 }
 
 #persona.extendido > div {
@@ -76,4 +80,28 @@
     grid-column: 2;
     grid-row: 1;
     padding: 0.35em 1em;
+}
+
+#persona.compacto #expandir {
+    grid-row: 1;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/54/54785.png');
+}
+
+#persona > button {
+    grid-column: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    cursor: pointer;
+    padding: 0.5em;
+    width: 2em;
+    height: -webkit-fill-available;
+    border: none;
+    border-left: 1px solid #ddd;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    color: transparent;
+
 }

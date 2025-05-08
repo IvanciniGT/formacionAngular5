@@ -7,6 +7,8 @@ import { ESTADOS, Transicion, TRANSICIONES } from './persona.state.component';
 import { PersonasService } from '../../services/personas/personas.service';
 import { Subscription } from 'rxjs';
 
+export type Modo = 'compacto'|'extensible'|'extendido';
+
 @Component({
   selector: 'persona',
   templateUrl: './persona.component.html',
@@ -19,19 +21,49 @@ export class PersonaComponent implements OnInit, OnDestroy {
   readonly ESTADOS = ESTADOS; // Para poder usarlo en el HTML
 
   subscripcionCargaDatos?: Subscription;
-
   estado: number = ESTADOS.INICIACION;
+  estaExtendido: boolean = false;
+
   @Input() datos!: DatosPersona|PersonaId;
   @Input() datosPersona!: DatosPersona;
+  @Input() modo: Modo = 'compacto';
+  @Input() extendidoInicialmente: boolean = false;
 
   constructor(private readonly servicioPersonas: PersonasService) { }
 
   ngOnInit() {
+    this.establecerValorInicialDelModo();
     this.intentarEjecutar(TRANSICIONES.MOSTRAR_DATOS_SUMINISTRADOS) || this.ejecutar(TRANSICIONES.CARGAR_DATOS);
   }
 
   ngOnDestroy() {
       this.subscripcionCargaDatos?.unsubscribe();
+  }
+
+  private establecerValorInicialDelModo() {
+    switch (this.modo) {
+      case 'compacto':
+        this.estaExtendido = false;
+        break;
+      case 'extensible':
+        this.estaExtendido = this.extendidoInicialmente;
+        break;
+      case 'extendido':
+        this.estaExtendido = true;
+        break;
+    }
+  }
+
+  isExtensible():boolean{
+    return this.modo === 'extensible';
+  }
+  
+  toogleModo(){
+    if(!this.isExtensible()){
+      console.error("No se puede cambiar el modo, ya que no es extensible");
+      return;
+    }
+    this.estaExtendido = !this.estaExtendido;
   }
 
   private intentarEjecutar(transicion: Transicion):boolean {

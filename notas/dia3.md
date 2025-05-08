@@ -11,6 +11,7 @@
     id="192938392" \
     datos="MODELO" / O me daban una o me daban la otra. En ocasiones lo único que tendrá quien use este componente es el id de la persona y el resto de datos los tendré (YO COMPONENTE) que pedir al servidor. En otras ocasiones me pasaban el modelo completo de la persona y yo solo lo muestro.
     modo="compacto|extensible|extendido" 
+    modoInicial="compacto|extendido"
     editable="true" 
     seleccionable="true" 
     seleccionado="true" 
@@ -228,3 +229,120 @@ Fecha de nacimiento
    10-10-2038
 
 REQUISITO: Si solo tuviera un sitio donde validar el DNI: BBDD
+
+
+        GUARDA: extendible
+   +-----extender-----+
+   |                  v
+compacto           extendido
+   ^                  |
+   +-----compactar----+
+        GUARDA: extendible
+
+Esta máquina de estados es PARALELA a la otra máquina de estados.
+Yo puedo estar seleccionado o no , edición o no ... en espera de dato o no...
+Y CON INDEPENDENCIA puedo estar: Compacto o extendido
+
+Esta máquina de estados tiene 2 estados.
+2 transiciones... de a a b y viceversa... con exactamente las mismas guardas.
+Voy a montar el mismo pifostio que arriba para controlar el estado de esta máquina de estados.
+EN ESTE CASO, meto una variable BOOLEANA y punto.
+
+
+----
+
+
+```java
+// DIA 1
+// DIA 101 y quiero hacer que la edad no pueda ser negativa
+public class Persona {
+    private String id;
+    private String nombre;
+    private String foto;
+    private int edad;
+
+    // Método para establecer la edad
+    public void setEdad(int edad) {
+        if (edad < 0) {
+            throw new IllegalArgumentException("La edad no puede ser negativa");
+        }
+        this.edad = edad;
+    }
+
+    // Método para obtener la edad
+    public int getEdad() {
+        return edad;
+    }
+
+    // Otros métodos y atributos de la clase
+    // getters y setters
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getFoto() {
+        return foto;
+    }
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+
+}
+// ESTO ES JAVA ES UNA MIERDA ENORME !!! ME ECHAN !
+// DIA 2-100 la gente empieza a usar mi clase
+Persona p=new Persona();
+p.setId("192938392");
+p.setNombre("Federico Ruiz");
+p.setFoto("https://www.gravatar.com/avatar/192938392");
+p.setEdad(43); // Esto es un error de programación, no debería poderse hacer
+
+System.out.println(p.getId());
+System.out.println(p.getNombre());
+System.out.println(p.getFoto());
+System.out.println(p.getEdad());
+// DIA 102... 1 millón de personas kalasnikov en mano buscándome .. su código ni compila.
+```
+Los getters y setters de JAVA NO SON PARA ENCAPSULA.. ni para acceder a los datos ni nada der eso.
+SIMPLEMENTE ESTAN AHI PARA FACILITAR EL MNTO DEL CODIGO
+Y SE DEBE A LA MALA SINTAXIS QUE TIENE JAVA
+
+```ts
+export class Persona {
+    id: string;
+    nombre: string;
+    foto: string;
+    private _edad: number;
+
+    get edad(): number {
+        return this._edad;
+    }
+
+    set edad(value: number) {
+        if (value < 0) {
+            throw new Error("La edad no puede ser negativa");
+        }
+        this._edad = value;
+    }
+}
+// ESTO ES LO NORMAL EN TS
+const p: Persona = new Persona();
+p.id = "192938392";
+p.nombre = "Federico Ruiz";
+p.foto = "https://www.gravatar.com/avatar/192938392";
+p.edad = 43;
+
+console.log(p.id);
+console.log(p.nombre);
+console.log(p.foto);
+console.log(p.edad);
+```
+

@@ -4,17 +4,25 @@
     </div>
 }
 @else if (this.estado === this.ESTADOS.DESELECCIONADO){
-    <div id="persona" class="extendido">
-        <img [src]="this.datosPersona.foto" alt="Avatar" id="foto"/>
-        <div id="nombre">{{this.datosPersona.nombre}}</div>
-        <div id="email">{{this.datosPersona.email}}</div>
-        <div id="telefono">{{this.datosPersona.telefono}}</div>
-    </div>
-    
-    <div id="persona" class="compacto">
-        <img src="{{this.datosPersona.foto}}" alt="Avatar" id="foto"/>
-        <div id="nombre">{{this.datosPersona.nombre}}</div>
-    </div>
+    @if (this.estaExtendido){
+        <div id="persona" class="extendido">
+            <img [src]="this.datosPersona.foto" alt="Avatar" id="foto"/>
+            <div id="nombre">{{this.datosPersona.nombre}}</div>
+            <div id="email">{{this.datosPersona.email}}</div>
+            <div id="telefono">{{this.datosPersona.telefono}}</div>
+            @if (this.isExtensible()){
+                <button id="compactar" (click)="this.toogleModo()">bbb</button>
+            }
+        </div>
+    }@else{
+        <div id="persona" class="compacto" >
+            <img src="{{this.datosPersona.foto}}" alt="Avatar" id="foto"/>
+            <div id="nombre">{{this.datosPersona.nombre}}</div>
+            @if (this.isExtensible()){
+                <button id="expandir" (click)="this.toogleModo()">ccc</button>
+            }
+        </div>
+    }
 }
 @else if (this.estado === this.ESTADOS.ERROR_CARGA_DATOS){
     <div id="cargando">

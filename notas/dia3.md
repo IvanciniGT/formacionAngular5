@@ -14,7 +14,7 @@
     modoInicial="compacto|extendido"
     editable="true" 
     seleccionable="true" 
-    seleccionado="true" 
+    seleccionadoInicial="true" 
     estiloBase="css_class"
 
     onSeleccionado="llamar a una función que haga algo"

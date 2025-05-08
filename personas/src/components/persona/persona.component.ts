@@ -28,6 +28,7 @@ export class PersonaComponent implements OnInit, OnDestroy {
   @Input() datosPersona!: DatosPersona;
   @Input() modo: Modo = 'compacto';
   @Input() extendidoInicialmente: boolean = false;
+  @Input() seleccionable: boolean = false;
 
   constructor(private readonly servicioPersonas: PersonasService) { }
 
@@ -66,6 +67,14 @@ export class PersonaComponent implements OnInit, OnDestroy {
     this.estaExtendido = !this.estaExtendido;
   }
 
+  toogleSeleccionado(){
+    if(this.estado === ESTADOS.SELECCIONADO){
+      this.ejecutar(TRANSICIONES.DESELECCIONAR);
+    } else if(this.estado === ESTADOS.DESELECCIONADO){
+      this.ejecutar(TRANSICIONES.SELECCIONAR);
+    } 
+  }
+
   private intentarEjecutar(transicion: Transicion):boolean {
     return this.ejecutar(transicion, false);
   }
@@ -87,6 +96,11 @@ export class PersonaComponent implements OnInit, OnDestroy {
             this.comprobarGuarda( tenemosLosDatosDeLaPersona, "No se puede mostrar los datos, ya que no tenemos los datos de la persona");
             this.datosPersona=this.datos as DatosPersona;
             break;
+
+            case TRANSICIONES.SELECCIONAR:
+            case TRANSICIONES.DESELECCIONAR:
+              this.comprobarGuarda(this.seleccionable, "No se puede seleccionar o deseleccionar, ya que no es seleccionable");
+              break;
       }
   
       this.estado = transicion.to;

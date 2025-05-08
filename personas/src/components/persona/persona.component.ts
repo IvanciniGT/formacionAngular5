@@ -1,13 +1,16 @@
 
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatosPersona, esPersonaId, PersonaId } from '../../models/persona.model';
 import { ESTADOS, Transicion, TRANSICIONES } from './persona.state.component';
 import { PersonasService } from '../../services/personas/personas.service';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export type Modo = 'compacto'|'extensible'|'extendido';
+
+const PERIODO_ENTRE_REINTENTOS_CARGA = 5000; // 5 segundos
 
 @Component({
   selector: 'persona',
@@ -23,22 +26,40 @@ export class PersonaComponent implements OnInit, OnDestroy {
   subscripcionCargaDatos?: Subscription;
   estado: number = ESTADOS.INICIACION;
   estaExtendido: boolean = false;
+  errorEnCargaDatos?: string;
+  reintentoDeCargaTimer?: ReturnType<typeof setTimeout>;
 
   @Input() datos!: DatosPersona|PersonaId;
   @Input() datosPersona!: DatosPersona;
   @Input() modo: Modo = 'compacto';
-  @Input() extendidoInicialmente: boolean = false;
-  @Input() seleccionable: boolean = false;
+  @Input() extendidoInicialmente = false;
+  @Input() seleccionable = false;
+  @Input() seleccionadoInicialmente = false;
+
+  @Output() seleccionado = new EventEmitter<DatosPersona>();
+  @Output() deseleccionado = new EventEmitter<DatosPersona>();
 
   constructor(private readonly servicioPersonas: PersonasService) { }
 
   ngOnInit() {
     this.establecerValorInicialDelModo();
-    this.intentarEjecutar(TRANSICIONES.MOSTRAR_DATOS_SUMINISTRADOS) || this.ejecutar(TRANSICIONES.CARGAR_DATOS);
+    if(this.intentarEjecutar(TRANSICIONES.MOSTRAR_DATOS_SUMINISTRADOS) ){
+      this.mirarSiHayQueSeleccionarInicialmente();
+    }else{
+      this.ejecutar(TRANSICIONES.CARGAR_DATOS);
+    }
   }
 
   ngOnDestroy() {
-      this.subscripcionCargaDatos?.unsubscribe();
+      this.desuscribirDeCargaDatos();
+      clearTimeout(this.reintentoDeCargaTimer);
+  }
+
+  private desuscribirDeCargaDatos() {
+    if(this.subscripcionCargaDatos){
+      this.subscripcionCargaDatos.unsubscribe();
+      this.subscripcionCargaDatos = undefined;
+    }
   }
 
   private establecerValorInicialDelModo() {
@@ -98,8 +119,16 @@ export class PersonaComponent implements OnInit, OnDestroy {
             break;
 
             case TRANSICIONES.SELECCIONAR:
+              this.comprobarGuarda(this.seleccionable, "No se puede seleccionar o deseleccionar, ya que no es seleccionable");
+              this.seleccionado.emit(this.datosPersona);
+              break;
             case TRANSICIONES.DESELECCIONAR:
               this.comprobarGuarda(this.seleccionable, "No se puede seleccionar o deseleccionar, ya que no es seleccionable");
+              this.deseleccionado.emit(this.datosPersona);
+              break;
+            case TRANSICIONES.REINTENTAR_CARGA:
+              console.log("Reintentando cargar los datos");
+              this.cargarDatos();
               break;
       }
   
@@ -117,19 +146,37 @@ export class PersonaComponent implements OnInit, OnDestroy {
   }
 
   private cargarDatos() {
+    this.desuscribirDeCargaDatos(); // Debido a los potenciales reintentos
     this.subscripcionCargaDatos = this.servicioPersonas.getPersona(this.datos as PersonaId).subscribe({
       next: (datosPersona: DatosPersona) => { 
         this.datosPersona = datosPersona;
       },
-      error: (error) => {
-        // Error 400 ---> No se encuentra la persona (REINTENTO? NO)
-        // Error 500 ---> Error en el servidor (REINTENTO? SI)
+      error: (error: HttpErrorResponse) => {
         this.ejecutar(TRANSICIONES.MARCAR_ERROR_EN_CARGA);
+        if(error.status >= 400 && error.status < 500){ // Error 400 ---> No se encuentra la persona (REINTENTO? NO)
+          this.errorEnCargaDatos = "Error con la persona solicitada. No se puede mostrar la información.";
+        } else { // Error 500 ---> Error en el servidor (REINTENTO? SI)
+          this.errorEnCargaDatos = "Error en el servidor, vamos a reintentarlo en unos segundos";
+          this.programarReintentoCargaDatos();
+        }
       },
       complete: () => {
         this.ejecutar(TRANSICIONES.MOSTRAR_DATOS_CARGADOS);
+        this.mirarSiHayQueSeleccionarInicialmente();
       }
     });
+  }
+
+  private programarReintentoCargaDatos() {
+    this.reintentoDeCargaTimer = setTimeout(() => {
+      this.cargarDatos();
+    }, PERIODO_ENTRE_REINTENTOS_CARGA);
+  }
+
+  private mirarSiHayQueSeleccionarInicialmente() {
+    if(this.seleccionable && this.seleccionadoInicialmente){
+      this.ejecutar(TRANSICIONES.SELECCIONAR);
+    }
   }
 
   private guardarDatos() {

@@ -20,13 +20,13 @@
                 <div id="telefono">{{this.datosPersona.telefono}}</div>
             }
             @if (this.isExtensible()){
-                <button (click)="this.toogleModo()">bbb</button>
+                <button (click)="this.toogleModo();$event.stopPropagation();">bbb</button>
             }
         </div>
 }
 @else if (this.estado === this.ESTADOS.ERROR_CARGA_DATOS){
     <div id="cargando">
-        Error al cargar los datos de la persona
+        {{this.errorEnCargaDatos}}
     </div>
 }
 

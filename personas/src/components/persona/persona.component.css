@@ -1,16 +1,19 @@
 #persona{
-    border: 1px solid black;
+    border: 1px solid #999;
     border-radius: 0.5em;
     overflow: hidden;
     width: 100%;
     font-family: sans-serif;
     font-size: 0.8em;
-    transition: height 1s ease-in-out;
+    transition: height 0.3s ease-in-out;
+    height: 2em;
+    margin: 0.5em;
 }
 #persona.extendido {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     grid-template-rows: 1fr 1fr 1fr;
+    height: 5em;
 }
 
 #persona.extendido #foto {
@@ -21,23 +24,26 @@
 #persona.extendido #nombre {
     grid-column: 2;
     grid-row: 1;
+    padding: 0.25em 1em 0.15em 1em;
 }
 #persona.extendido #email {
     grid-column: 2;
     grid-row: 2;
+    padding: 0.15em 1em;
 }
 #persona.extendido #telefono {
     grid-column: 2;
     grid-row: 3;
+    padding: 0.15em 1em 0.25em 1em;
 }
 #persona.extendido > button {
     grid-row: 1/4;
     background-image: url('https://cdn-icons-png.flaticon.com/512/54/54785.png');
+    background-position: center 3.5em;
     transform: rotate(180deg);
 }
 
 #persona.extendido > div {
-    padding: 0.25em 1em;
     white-space: nowrap;
 }
 
@@ -87,7 +93,6 @@
 #persona.compacto > button {
     grid-row: 1;
     background-image: url('https://cdn-icons-png.flaticon.com/512/54/54785.png');
-    transform: rotate(0deg);
 }
 
 #persona > button {
@@ -103,17 +108,22 @@
     border: none;
     border-left: 1px solid #ddd;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center 0.5em;
     background-size: 1em;
+    transform: rotate(0deg);
     color: transparent;
+    transition: height 0.3s ease-in-out;
 }
 
 .seleccionado {
     background-color: #ddf;
-    color: transparent;
     border-color: #88f;
 }
 
 .seleccionable {
     cursor: pointer;
+}
+
+#persona #foto{
+    transition: height 0.3s ease-in-out;
 }

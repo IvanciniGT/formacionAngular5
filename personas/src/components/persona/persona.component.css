@@ -15,6 +15,7 @@
 #persona.extendido #foto {
     grid-column: 1;
     grid-row: 1/4;
+    height: 5em;
 }
 #persona.extendido #nombre {
     grid-column: 2;

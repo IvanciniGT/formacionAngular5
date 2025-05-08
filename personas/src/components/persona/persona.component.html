@@ -5,15 +5,20 @@
 }
 @else if (this.estado === this.ESTADOS.DESELECCIONADO){
     <div id="persona" class="extendido">
-        <img src="https://www.gravatar.com/avatar/192938392" alt="Avatar" id="foto"/>
-        <div id="nombre">Felipe Ruiz</div>
-        <div id="email">felipe.ruizcorreo.es</div>
-        <div id="telefono">948783494</div>
+        <img [src]="this.datosPersona.foto" alt="Avatar" id="foto"/>
+        <div id="nombre">{{this.datosPersona.nombre}}</div>
+        <div id="email">{{this.datosPersona.email}}</div>
+        <div id="telefono">{{this.datosPersona.telefono}}</div>
     </div>
     
     <div id="persona" class="compacto">
-        <img src="https://www.gravatar.com/avatar/192938392" alt="Avatar" id="foto"/>
-        <div id="nombre">Felipe Ruiz</div>
+        <img src="{{this.datosPersona.foto}}" alt="Avatar" id="foto"/>
+        <div id="nombre">{{this.datosPersona.nombre}}</div>
+    </div>
+}
+@else if (this.estado === this.ESTADOS.ERROR_CARGA_DATOS){
+    <div id="cargando">
+        Error al cargar los datos de la persona
     </div>
 }
 

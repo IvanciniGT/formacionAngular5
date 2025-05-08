@@ -15,7 +15,7 @@ import { DatosPersonaSegunElBackend } from "./models/persona.model";
 })
 export class PersonasServiceImpl implements PersonasService {
 
-    private readonly url = 'http://localhost:3000/palabra/';
+    private readonly url = 'http://localhost:3000/personas/';
 
     constructor(private readonly clienteHttp: HttpClient, private readonly mapper: PersonasMapper){}
 

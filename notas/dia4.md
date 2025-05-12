@@ -1,11 +1,13 @@
 
 Pendientes:
 - [x] seleccionadoInicial
-- [ ] Gestión de errores
+- [x] Gestión de errores
 - [x] Gestión de eventos
 
 
 - Toda la edición (formularios y llamar al backend para guardar los datos)
+- Listado de personas Component
+- Alta de persona (Formularios reactivos = MAS COMPLEJO!)
 
 ## Comunicación entre componentes
 

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { PersonaComponent } from "../persona/persona.component";
 import { DatosPersona } from '../../models/persona.model';
 import { ListadoPersonasComponent } from "../listado-personas/listado-personas.component";
+import { FormularioComponent } from "../formulario/formulario.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [PersonaComponent, ListadoPersonasComponent],
+  imports: [PersonaComponent, ListadoPersonasComponent, FormularioComponent],
 })
 export class AppComponent {
 

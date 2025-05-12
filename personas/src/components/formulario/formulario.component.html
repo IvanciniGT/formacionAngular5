@@ -1,0 +1,97 @@
+<form [formGroup]="formulario" (ngSubmit)="this.enviarFormulario()">
+        <div [ngClass]="{
+                'error': this.formulario.get('nombre')?.dirty && !this.formulario.get('nombre')?.valid,
+                'valido': this.formulario.get('nombre')?.dirty && this.formulario.get('nombre')?.valid
+                }">
+                <label for="nombre">Nombre:</label>
+                <input formControlName="nombre" />
+                @if(this.formulario.get('nombre')?.errors?.['minlength'] && this.formulario.get('nombre')?.dirty){
+                        <div class="error">Nombre demasiado corto (al menos debe tener 3 caracteres)</div>
+                }
+                @if(this.formulario.get('nombre')?.errors?.['maxlength'] && this.formulario.get('nombre')?.dirty){
+                        <div class="error">Nombre demasiado largo (como mucho puede usar 50 caracteres)</div>
+                }
+                @if(this.formulario.get('nombre')?.errors?.['required'] && this.formulario.get('nombre')?.dirty){
+                        <div class="error">El nombre es requerido</div>
+                }
+        </div>
+        <div [ngClass]="{
+                'error': this.formulario.get('apellidos')?.dirty && !this.formulario.get('apellidos')?.valid,
+                'valido': this.formulario.get('apellidos')?.dirty && this.formulario.get('apellidos')?.valid
+                }">
+                <label for="apellidos">Apellidos:</label>
+                <input formControlName="apellidos" />
+
+                @if(this.formulario.get('apellidos')?.errors?.['minlength'] && this.formulario.get('apellidos')?.dirty){
+                        <div class="error">Apellidos demasiado cortos (al menos debe tener 3 caracteres)</div>
+                }
+                @if(this.formulario.get('apellidos')?.errors?.['maxlength'] && this.formulario.get('apellidos')?.dirty){
+                        <div class="error">Apellidos demasiado largos (como mucho puede usar 50 caracteres)</div>
+                }
+                @if(this.formulario.get('apellidos')?.errors?.['required'] && this.formulario.get('apellidos')?.dirty){
+                        <div class="error">Los apellidos son requeridos</div>
+                }
+        </div>
+        <div [ngClass]="{
+                'error': this.formulario.get('edad')?.dirty && !this.formulario.get('edad')?.valid,
+                'valido': this.formulario.get('edad')?.dirty && this.formulario.get('edad')?.valid
+                }">
+                <label for="edad">Edad:</label>
+                <input type="number" formControlName="edad" />
+
+                @if(this.formulario.get('edad')?.errors?.['min'] && this.formulario.get('edad')?.dirty){
+                        <div class="error">Edad demasiado baja (al menos debe tener 18 años)</div>
+                }
+                @if(this.formulario.get('edad')?.errors?.['max'] && this.formulario.get('edad')?.dirty){
+                        <div class="error">Edad demasiado alta (como mucho puede tener 120 años)</div>
+                }
+                @if(this.formulario.get('edad')?.errors?.['required'] && this.formulario.get('edad')?.dirty){
+                        <div class="error">La edad es requerida</div>
+                }
+        </div>
+        <div [ngClass]="{
+                'error': this.formulario.get('email')?.dirty && !this.formulario.get('email')?.valid,
+                'valido': this.formulario.get('email')?.dirty && this.formulario.get('email')?.valid
+                }">
+                <label type="email" for="email">Email:</label>
+                <input formControlName="email" />
+
+                @if(this.formulario.get('email')?.errors?.['email'] && this.formulario.get('email')?.dirty){
+                        <div class="error">Email no válido</div>
+                }
+                @if(this.formulario.get('email')?.errors?.['required'] && this.formulario.get('email')?.dirty){
+                        <div class="error">El email es requerido</div>
+                }
+        </div>
+        <div [ngClass]="{
+                'error': this.formulario.get('conduce')?.dirty && !this.formulario.get('conduce')?.valid,
+                'valido': this.formulario.get('conduce')?.dirty && this.formulario.get('conduce')?.valid
+                }">
+                <label for="conduce">Conduce:</label>
+                <input type="radio" formControlName="conduce" value="no">No
+                <input type="radio" formControlName="conduce" value="coche">Coche
+                <input type="radio" formControlName="conduce" value="moto">Moto
+
+                @if(this.formulario.get('conduce')?.errors?.['required'] && this.formulario.get('conduce')?.dirty){
+                        <div class="error">El campo "Conduce" es requerido</div>
+                }
+        </div>
+        <div>
+                <label for="vehiculo">Vehículo:</label>
+                <input formControlName="vehiculo" />
+        </div>
+        <div [ngClass]="{
+                'error': this.formulario.get('dni')?.dirty && !this.formulario.get('dni')?.valid,
+                'valido': this.formulario.get('dni')?.dirty && this.formulario.get('dni')?.valid
+                }">
+                <label for="dni">DNI:</label>
+                <input type="text" formControlName="dni" />
+                @if(this.formulario.get('dni')?.errors?.['pattern'] && this.formulario.get('dni')?.dirty){
+                        <div class="error">El DNI no sigue un patrón válido (Ej: 12345678A)</div>
+                }
+        </div>  
+        
+        <div>
+                <button type="submit" [disabled]="!this.formulario.valid">Guardar</button>
+        </div>
+</form>

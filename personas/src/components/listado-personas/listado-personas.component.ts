@@ -81,9 +81,7 @@ export class ListadoPersonasComponent implements OnInit, OnDestroy {
     this.asegurarSeleccionabilidad();
     if (!this.personasSeleccionadas.includes(persona)) {
       this.personasSeleccionadas.push(persona);
-    } //else { // BUG
-      //throw new Error('No se puede seleccionar una persona que ya está seleccionada');
-    //}
+    } 
     this.establecerEstadoDeSeleccion();
   }
 
@@ -93,14 +91,12 @@ export class ListadoPersonasComponent implements OnInit, OnDestroy {
     if(posicionEnElArrayDeSeleccionadas !== -1){
       this.personasSeleccionadas.splice(posicionEnElArrayDeSeleccionadas, 1);
       this.establecerEstadoDeSeleccion();
-    } else { // BUG
-      throw new Error('No se puede deseleccionar una persona que no está seleccionada');
-    }
+    } 
   }
 
   seleccionarTodasLasPersonas(){
     this.asegurarSeleccionabilidad();
-    this.personasSeleccionadas = this.personasAMostrar;
+    this.personasSeleccionadas = [...this.personasAMostrar];
     this.establecerEstadoDeSeleccion();
   }
 
@@ -127,7 +123,6 @@ export class ListadoPersonasComponent implements OnInit, OnDestroy {
       default:
         this.estadoActual = this.ESTADOS.ALGUNOS_SELECCIONADOS;
     }
-    console.log("SELECCIONADOS", this.personasSeleccionadas);
   }
 
 }

@@ -1,0 +1,12 @@
+form > div > .error {
+    color: red;
+    font-size: 0.8em;
+}
+
+div.error > label {
+    color: red;
+}
+
+div.valido > label {
+    color: green;
+}

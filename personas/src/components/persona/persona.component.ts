@@ -1,6 +1,6 @@
 
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatosPersona, esPersonaId, PersonaId } from '../../models/persona.model';
 import { ESTADOS, Transicion, TRANSICIONES } from './persona.state.component';
@@ -19,7 +19,7 @@ const PERIODO_ENTRE_REINTENTOS_CARGA = 5000; // 5 segundos
   imports: [CommonModule], // Dentro de este modulo se declaran entre otras cosas las directivas ngIf, ngFor y varios pipes (entre ellos el async)
   standalone: true, 
 })
-export class PersonaComponent implements OnInit, OnDestroy {
+export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
   
   readonly ESTADOS = ESTADOS; // Para poder usarlo en el HTML
 
@@ -35,6 +35,10 @@ export class PersonaComponent implements OnInit, OnDestroy {
   @Input() extendidoInicialmente = false;
   @Input() seleccionable = false;
   @Input() seleccionadoInicialmente = false;
+  // Algunos de esos input cambiarán con el tiempo.
+  // Y en ocasiones habrá que pedir a angular que ejecute código cuando cambien esos valores.
+  // Para eso angular me regala una función... y una interfaz: OnChanges
+
 
   @Output() seleccionado = new EventEmitter<DatosPersona>();
   @Output() deseleccionado = new EventEmitter<DatosPersona>();
@@ -47,6 +51,15 @@ export class PersonaComponent implements OnInit, OnDestroy {
       this.mirarSiHayQueSeleccionarInicialmente();
     }else{
       this.ejecutar(TRANSICIONES.CARGAR_DATOS);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Esta función se ejecuta si ALGUNA (da igual cual) propiedad (INPUT) cambia.
+    // En nuestro caso, lo que nos interesa es tener controlada la propiedad "seleccionadoInicialmente"
+    if(changes['seleccionadoInicialmente']){
+      // Lo que pongamos aquí dentro se ejecutará si y solo si, el valor que ha cambiado es el de "seleccionadoInicialmente"
+      this.mirarSiHayQueSeleccionarInicialmente();
     }
   }
 
@@ -174,8 +187,12 @@ export class PersonaComponent implements OnInit, OnDestroy {
   }
 
   private mirarSiHayQueSeleccionarInicialmente() {
-    if(this.seleccionable && this.seleccionadoInicialmente){
-      this.ejecutar(TRANSICIONES.SELECCIONAR);
+    if(this.seleccionable){
+      if(this.seleccionadoInicialmente){
+        this.intentarEjecutar(TRANSICIONES.SELECCIONAR);
+      } else{
+        this.intentarEjecutar(TRANSICIONES.DESELECCIONAR);
+      }
     }
   }
 

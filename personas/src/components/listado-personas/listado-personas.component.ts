@@ -1,18 +1,19 @@
 
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatosPersona } from '../../models/persona.model';
+import { PersonaComponent } from "../persona/persona.component";
 export type Modo = 'compacto'|'extensible'|'extendido';
 
 @Component({
   selector: 'listado-personas',
   templateUrl: './listado-personas.component.html',
   styleUrl: './listado-personas.component.css',
-  imports: [CommonModule], // Dentro de este modulo se declaran entre otras cosas las directivas ngIf, ngFor y varios pipes (entre ellos el async)
+  imports: [CommonModule, PersonaComponent], // Dentro de este modulo se declaran entre otras cosas las directivas ngIf, ngFor y varios pipes (entre ellos el async)
   standalone: true, 
 })
-export class ListadoPersonasComponent implements OnInit {
+export class ListadoPersonasComponent implements OnInit, OnDestroy {
   
   readonly ESTADOS = { 
     NINGUNO_SELECCIONADO: 1,
@@ -21,12 +22,13 @@ export class ListadoPersonasComponent implements OnInit {
   }
 
   @Input() seleccionable = false;
-  @Input() buscador: boolean = false;
+  @Input() buscador = false;
   @Input() personas!: DatosPersona[];
   personasAMostrar!: DatosPersona[];
   personasSeleccionadas: DatosPersona[] = [];
   filtroActivo!: string;
   estadoActual: number = this.ESTADOS.NINGUNO_SELECCIONADO;
+  filtroProgramado?: ReturnType<typeof setTimeout>;
 
   constructor() { }
 
@@ -34,22 +36,66 @@ export class ListadoPersonasComponent implements OnInit {
     this.determinarLasPersonasAMostrar(''); // Es decir, rellenar la variable personasAMostrar
   }
 
+  ngOnDestroy(){
+    this.desprogramarFiltro();
+  }
+
+  async programarFiltro(nuevoFiltro:string){
+    // Si hubiera ya un filtro programado, lo desprogramo... lo elimino
+    this.desprogramarFiltro();
+    this.filtroProgramado = setTimeout( () => this.determinarLasPersonasAMostrar(nuevoFiltro), 300);
+  }
+
+  private desprogramarFiltro(){
+    if (this.filtroProgramado) {
+      clearTimeout(this.filtroProgramado);
+      this.filtroProgramado = undefined;
+    }
+  }
+
   // Cada vez que se escriba una letra en el formulario del buscador, llamaremos a una función:
   determinarLasPersonasAMostrar(nuevoFiltro:string){
-    this.filtroActivo = nuevoFiltro;
-    // TODO: Copiamos del array personas al array personasAMostrar, las personas que cumplan con el filtro
+    if(this.filtroActivo === nuevoFiltro.toLowerCase()) return;
+    this.filtroActivo = nuevoFiltro.toLowerCase();
+    if(!this.buscador && nuevoFiltro !== ''){ // BUG
+      throw new Error('El buscador no está habilitado... no se puede usar esta función');
+    } else if(nuevoFiltro === ''){ // No hay que aplicar nada
+      this.personasAMostrar = this.personas;
+    } else {
+      /*
+      // Lenguaje imperativo
+      this.personasAMostrar = [];
+      for (const persona of this.personas) {
+        if (persona.nombre.toLowerCase().includes(this.filtroActivo)){
+          this.personasAMostrar.push(persona);
+        }
+      }*/
+      // Lenguaje funcional
+      this.personasAMostrar = this.personas.filter(
+        persona => persona.nombre.toLowerCase().includes(this.filtroActivo)
+      );
+    }
   }
 
   nuevaPersonaSeleccionada(persona: DatosPersona){ 
     this.asegurarSeleccionabilidad();
-    // TODO: Añadir la persona al array de seleccionadas si es que no lo está ya
+    if (!this.personasSeleccionadas.includes(persona)) {
+      this.personasSeleccionadas.push(persona);
+    } //else { // BUG
+      //throw new Error('No se puede seleccionar una persona que ya está seleccionada');
+    //}
     this.establecerEstadoDeSeleccion();
   }
 
   nuevaPersonaDeseleccionada(persona: DatosPersona){ 
     this.asegurarSeleccionabilidad();
-    // TODO: Eliminar la persona del array de seleccionadas si es que está allí
-    this.establecerEstadoDeSeleccion();
+    const posicionEnElArrayDeSeleccionadas = this.personasSeleccionadas.indexOf(persona);
+    if(posicionEnElArrayDeSeleccionadas !== -1){
+      this.personasSeleccionadas.splice(posicionEnElArrayDeSeleccionadas, 1);
+      this.establecerEstadoDeSeleccion();
+    } else { // BUG
+      throw new Error('No se puede deseleccionar una persona que no está seleccionada');
+    }
   }
 
   seleccionarTodasLasPersonas(){
@@ -81,6 +127,7 @@ export class ListadoPersonasComponent implements OnInit {
       default:
         this.estadoActual = this.ESTADOS.ALGUNOS_SELECCIONADOS;
     }
+    console.log("SELECCIONADOS", this.personasSeleccionadas);
   }
 
 }

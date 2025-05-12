@@ -1,3 +1,39 @@
+@if (this.buscador){
+    <label for="nombre-persona">Buscar</label>
+    <input  #buscador
+            name="nombre-persona" 
+            type="text" 
+            placeholder="Nombre de la persona" 
+            (keyup)="this.programarFiltro(buscador.value)"
+            (mouseup)="this.programarFiltro(buscador.value)"
+            />
+}
 <ol>
     <!--En bucle, las personas que estén en qué lista?: personasAMostrar-->
+    @for(persona of this.personasAMostrar; track persona.id){
+        <persona 
+            [datos]="persona"
+            [seleccionable]="this.seleccionable"
+            [seleccionadoInicialmente]="this.personasSeleccionadas.includes(persona)"
+            (seleccionado)="this.nuevaPersonaSeleccionada(persona)"
+            (deseleccionado)="this.nuevaPersonaDeseleccionada($event)"
+        ></persona>
+    }
 </ol>
+
+@if (this.seleccionable){
+<div id="botonera">
+    @if (this.estadoActual !== this.ESTADOS.TODOS_SELECCIONADOS){
+        <button id="seleccionar-todos" (click)="this.seleccionarTodasLasPersonas()">Seleccionar Todos</button>
+    }
+    @if (this.estadoActual !== this.ESTADOS.NINGUNO_SELECCIONADO){
+        <button id="deseleccionar-todos" (click)="this.deseleccionarTodasLasPersonas()">Deseleccionar Todos</button>
+    }
+</div>
+}
+
+<!--
+
+ Buscador: Federico______________
+
+-->

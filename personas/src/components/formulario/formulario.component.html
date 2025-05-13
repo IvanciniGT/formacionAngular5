@@ -89,9 +89,49 @@
                 @if(this.formulario.get('dni')?.errors?.['pattern'] && this.formulario.get('dni')?.dirty){
                         <div class="error">El DNI no sigue un patrón válido (Ej: 12345678A)</div>
                 }
-        </div>  
+                @if(this.formulario.get('dni')?.errors?.['dniInvalido'] && this.formulario.get('dni')?.dirty){
+                        <div class="error">La letra del dni no encaja con el número, revíselo.</div>
+                }
+               </div>  
         
         <div>
+
+                <h2> Direcciones </h2>
+                <div formArrayName="direcciones">
+                    @for(direccion of this.direcciones.controls; track direccion; let indice = $index){
+                        <div id="direccion" [formGroupName]="indice" >
+                                <input class="calle" formControlName="calle" placeholder="Calle" />
+                                <input class="numero" formControlName="numero" placeholder="Número" />
+                                <input class="piso" formControlName="piso" placeholder="Piso" />
+                                <input class="puerta" formControlName="puerta" placeholder="Puerta" />
+                                <input class="cp" formControlName="cp" placeholder="Código Postal" />
+                                <input class="poblacion" formControlName="poblacion" placeholder="Población" />
+                                <button (click)="this.eliminarDireccion(indice)">Eliminar</button>
+                        </div>
+                        @if(direccion.get('calle')?.errors?.['required'] && this.direcciones.at(indice).get('calle')?.dirty){
+                                <div class="error">La calle es requerida</div>
+                        }
+                        @if(direccion.get('numero')?.errors?.['required'] && this.direcciones.at(indice).get('numero')?.dirty){
+                                <div class="error">El número es requerido</div>
+                        }
+                        @if(direccion.get('piso')?.errors?.['required'] && this.direcciones.at(indice).get('piso')?.dirty){
+                                <div class="error">El piso es requerido</div>
+                        }
+                        @if(direccion.get('puerta')?.errors?.['required'] && this.direcciones.at(indice).get('puerta')?.dirty){
+                                <div class="error">La puerta es requerida</div>
+                        }
+                        @if(direccion.get('cp')?.errors?.['required'] && this.direcciones.at(indice).get('cp')?.dirty){
+                                <div class="error">El código postal es requerido</div>
+                        }
+                        @if(direccion.get('cp')?.errors?.['pattern'] && this.direcciones.at(indice).get('cp')?.dirty){
+                                <div class="error">El código postal debe tener 5 dígitos</div>
+                        }
+                    }
+                    <div (click)="this.agregarDireccion()">Añadir dirección</div>
+                </div>
+
+
+
                 <button type="submit" [disabled]="!this.formulario.valid">Guardar</button>
         </div>
 </form>

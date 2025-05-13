@@ -1,6 +1,11 @@
-form > div > .error {
+form *{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+form > div   .error {
     color: red;
     font-size: 0.8em;
+    margin-left: 100px;
 }
 
 div.error > label {
@@ -9,4 +14,27 @@ div.error > label {
 
 div.valido > label {
     color: green;
+}
+
+label {
+    display: inline-block;
+    font-size: 1.2em;
+    width: 100px;
+}
+
+#direccion{
+    white-space: nowrap;
+}
+
+.calle{
+    width: 15em;
+}
+.piso, .numero{
+    width: 3em;
+}
+.cp{
+    width: 4em;
+}
+.poblacion{
+    width: 10em;
 }

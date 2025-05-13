@@ -1,0 +1,13 @@
+<h1> Soy el componente escritor</h1>
+
+<input type="text" #campo placeholder="Escribe algo">
+
+<button (click)="this.hanEscrito(campo.value)">Enviar</button>
+
+<button (click)="this.borrarMensaje(); campo.value = ''">Borrar mensaje</button>
+
+<button (click)="this.borrarMensajesCompletos(); campo.value = ''">Borrar todo</button>
+
+<button (click)="this.recuperarUltimo(); campo.value = ''">Recuperar último</button>
+
+<hr>

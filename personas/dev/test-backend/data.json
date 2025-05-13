@@ -10,14 +10,14 @@
     {
       "id": "2",
       "nombre": "Javier",
-      "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
+      "foto": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxIvPX4QM3R_jz0BLZ8tikBYkoVJ5hCD9jmQ&s",
       "telefono": "666 666 666",
       "email": "javier@example.com"
     },
     {
       "id": "3",
       "nombre": "Federico",
-      "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
+      "foto": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxIvPX4QM3R_jz0BLZ8tikBYkoVJ5hCD9jmQ&s",
       "telefono": "666 666 666",
       "email": "federico@example.com"
     }

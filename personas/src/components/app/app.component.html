@@ -1,9 +1,17 @@
 <h1> Aplicación de personas </h1>
 
-<div style="width:400px;">
+
+<app-componente-escritor></app-componente-escritor>
+
+<app-componente-lector></app-componente-lector>
+<app-componente-lector></app-componente-lector>
+<app-componente-lector-historico></app-componente-lector-historico>
+<app-componente-lector></app-componente-lector>
 <!--
+<div style="width:400px;">
+
 <formulario></formulario>
- 
+
                 <listado-personas
                 [personas]="this.revisoresDelExpediente"
                 [buscador]="true"
@@ -17,12 +25,14 @@
 [seleccionadoInicialmente]="true"
 (seleccionado)="this.hanSeleccionaAAlguien($event)"
 (deseleccionado)="this.hanDeseleccionadoAAlguien($event)"
+[editable]="true" 
+
 ></persona>
 <persona datos="1" modo="compacto"></persona>
 <persona datos="1" modo="extendido"></persona>
 <persona datos="1" modo="extensible" [extendidoInicialmente]="true"></persona>
 <persona datos="-19"></persona>
--->
+
 <persona 
         datos="1" 
         modo="extendido" 
@@ -32,7 +42,30 @@
         [seleccionadoInicialmente]="false"
         (seleccionado)="this.hanSeleccionaAAlguien($event)"
         (deseleccionado)="this.hanDeseleccionadoAAlguien($event)"
-                ></persona>
+></persona>
 
-                <persona datos="2" modo="extendido"></persona>
-        </div>
+<persona 
+        datos="2" 
+        modo="extendido" 
+        [extendidoInicialmente]="false" 
+        [seleccionable]="true" 
+        [editable]="true" 
+        [seleccionadoInicialmente]="false"
+        (seleccionado)="this.hanSeleccionaAAlguien($event)"
+        (deseleccionado)="this.hanDeseleccionadoAAlguien($event)"
+></persona>
+
+<persona 
+        datos="3" 
+        modo="extendido" 
+        [extendidoInicialmente]="false" 
+        [seleccionable]="true" 
+        [editable]="true" 
+        [seleccionadoInicialmente]="false"
+        (seleccionado)="this.hanSeleccionaAAlguien($event)"
+        (deseleccionado)="this.hanDeseleccionadoAAlguien($event)"
+></persona>
+
+</div>
+
+        -->

@@ -3,12 +3,15 @@ import { PersonaComponent } from "../persona/persona.component";
 import { DatosPersona } from '../../models/persona.model';
 import { ListadoPersonasComponent } from "../listado-personas/listado-personas.component";
 import { FormularioComponent } from "../formulario/formulario.component";
+import { ComponenteEscritorComponent } from "../componente-escritor/componente-escritor.component";
+import { ComponenteLectorComponent } from "../componente-lector/componente-lector.component";
+import { ComponenteLectorHistoricoComponent } from "../componente-lector-historico/componente-lector-historico.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [PersonaComponent, ListadoPersonasComponent, FormularioComponent],
+  imports: [PersonaComponent, ListadoPersonasComponent, FormularioComponent, ComponenteEscritorComponent, ComponenteLectorComponent, ComponenteLectorHistoricoComponent],
 })
 export class AppComponent {
 

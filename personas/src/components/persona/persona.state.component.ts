@@ -44,7 +44,7 @@ export const TRANSICIONES = { // INFINITIVOS (indican una acción)
       to: ESTADOS.SELECCIONADO,
     },
     EDITAR: {
-      from: ESTADOS.SELECCIONADO,
+      from: ESTADOS.DESELECCIONADO,
       to: ESTADOS.EN_EDICION,
     },
     CANCELAR_EDICION: {
@@ -58,6 +58,10 @@ export const TRANSICIONES = { // INFINITIVOS (indican una acción)
     MARCAR_ERROR_EN_GUARDADO: {
       from: ESTADOS.EN_ESPERA_DE_GUARDADO,
       to: ESTADOS.ERROR_GUARDADO,
+    },
+    REEDITAR: {
+      from: ESTADOS.EN_ESPERA_DE_GUARDADO,
+      to: ESTADOS.EN_EDICION,
     },
     REINTENTAR_GUARDADO: {
       from: ESTADOS.ERROR_GUARDADO,

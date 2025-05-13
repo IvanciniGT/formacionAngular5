@@ -6,4 +6,6 @@ import { DatosPersona } from "../../models/persona.model";
 export abstract class PersonasService {
     //abstract getSignificados(palabra?: string): Promise<SignificadosDeUnaPalabra> ;
     abstract getPersona(personaId: string): Observable<DatosPersona> ;
+    abstract updatePersona(persona: DatosPersona):Observable<DatosPersona> ;
 }
+

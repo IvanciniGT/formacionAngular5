@@ -1,12 +1,13 @@
 
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatosPersona, esPersonaId, PersonaId } from '../../models/persona.model';
 import { ESTADOS, Transicion, TRANSICIONES } from './persona.state.component';
 import { PersonasService } from '../../services/personas/personas.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 export type Modo = 'compacto'|'extensible'|'extendido';
 
@@ -16,7 +17,7 @@ const PERIODO_ENTRE_REINTENTOS_CARGA = 5000; // 5 segundos
   selector: 'persona',
   templateUrl: './persona.component.html',
   styleUrl: './persona.component.css',
-  imports: [CommonModule], // Dentro de este modulo se declaran entre otras cosas las directivas ngIf, ngFor y varios pipes (entre ellos el async)
+  imports: [CommonModule, FormsModule], // Dentro de este modulo se declaran entre otras cosas las directivas ngIf, ngFor y varios pipes (entre ellos el async)
   standalone: true, 
 })
 export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
@@ -28,12 +29,14 @@ export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
   estaExtendido: boolean = false;
   errorEnCargaDatos?: string;
   reintentoDeCargaTimer?: ReturnType<typeof setTimeout>;
+  datosPersona!: DatosPersona;
+  datosPersonaEnEdicion?: DatosPersona;
 
   @Input() datos!: DatosPersona|PersonaId;
-  @Input() datosPersona!: DatosPersona;
   @Input() modo: Modo = 'compacto';
   @Input() extendidoInicialmente = false;
   @Input() seleccionable = false;
+  @Input() editable = false;
   @Input() seleccionadoInicialmente = false;
   // Algunos de esos input cambiarán con el tiempo.
   // Y en ocasiones habrá que pedir a angular que ejecute código cuando cambien esos valores.
@@ -43,7 +46,7 @@ export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
   @Output() seleccionado = new EventEmitter<DatosPersona>();
   @Output() deseleccionado = new EventEmitter<DatosPersona>();
 
-  constructor(private readonly servicioPersonas: PersonasService) { }
+  constructor(private readonly servicioPersonas: PersonasService, private readonly elementoHTMLAsociado: ElementRef) { }
 
   ngOnInit() {
     this.establecerValorInicialDelModo();
@@ -109,6 +112,31 @@ export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
     } 
   }
 
+  iniciarEdicion(evento: Event){
+    if(this.estado === ESTADOS.DESELECCIONADO){
+      this.ejecutar(TRANSICIONES.EDITAR);
+    } 
+    // Esta función lo que hace es programar la ejecución de la funcion que se suministra, justo antes del siguiente repintado de pantalla (pero ya después de que se haya regenerado el DOM que se pintará)
+    requestAnimationFrame( ()=>  {
+        const divPadreEditable = this.elementoHTMLAsociado.nativeElement.querySelector("#"+(evento.target as HTMLElement).id);
+        const inputEditable = divPadreEditable?.querySelector("input");
+        if(inputEditable){
+          inputEditable.focus();
+          inputEditable.select();
+        }
+      }
+    );
+  }
+
+  guardarDatos(){
+    // Aquí deberíamos hacer validaciones... pero me las curro yo
+    this.intentarEjecutar(TRANSICIONES.GUARDAR);
+  }
+
+  cancelarEdicion(){
+    this.ejecutar(TRANSICIONES.CANCELAR_EDICION);
+  }
+
   private intentarEjecutar(transicion: Transicion):boolean {
     return this.ejecutar(transicion, false);
   }
@@ -143,6 +171,30 @@ export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
               console.log("Reintentando cargar los datos");
               this.cargarDatos();
               break;
+            case TRANSICIONES.EDITAR:
+              this.datosPersonaEnEdicion= {...this.datosPersona};
+              break;
+            case TRANSICIONES.CANCELAR_EDICION:
+              this.datosPersonaEnEdicion = undefined;
+              break;
+            case TRANSICIONES.CONFIRMAR_GUARDADO:
+              this.datosPersona = this.datosPersonaEnEdicion as DatosPersona;
+              this.datosPersonaEnEdicion = undefined;
+              break;
+            case TRANSICIONES.GUARDAR:
+              this.servicioPersonas.updatePersona(this.datosPersonaEnEdicion as DatosPersona).subscribe({
+                complete: () => {
+                  this.ejecutar(TRANSICIONES.CONFIRMAR_GUARDADO);
+                },
+                error: (error: HttpErrorResponse) => {
+                  if(error.status >= 400 && error.status < 500){ // Error 400 ---> No se encuentra la persona (REINTENTO? NO)
+                    // Mostrar al usuario que error está devolviendo el servidor
+                    // Volver a edición para que lo arregle
+                    this.ejecutar(TRANSICIONES.EDITAR);
+                  } else{
+                    this.ejecutar(TRANSICIONES.MARCAR_ERROR_EN_GUARDADO);
+                  }
+              }});
       }
   
       this.estado = transicion.to;
@@ -194,9 +246,6 @@ export class PersonaComponent implements OnInit, OnDestroy, OnChanges {
         this.intentarEjecutar(TRANSICIONES.DESELECCIONAR);
       }
     }
-  }
-
-  private guardarDatos() {
   }
 
 }

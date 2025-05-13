@@ -25,6 +25,12 @@ export class PersonasServiceImpl implements PersonasService {
                                       map( (persona) => this.mapper.personaBackend2persona(persona) as DatosPersona)
                                );
     }
+    updatePersona(persona: DatosPersona):Observable<DatosPersona> {
+        const personaBackend = this.mapper.persona2personaBackend(persona);
+        return this.clienteHttp.put<DatosPersonaSegunElBackend>(this.url+persona.id, personaBackend);
+                        
+    }
+
 }
 
 export const providePersonasService = {

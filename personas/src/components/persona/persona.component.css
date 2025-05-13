@@ -70,7 +70,14 @@
 
 
 
-
+input {
+    width: calc( 100% - 5.5em ) ;
+    border: none;
+    background-color: #fedbbc;
+    margin: 0;
+    padding: 0 1em;
+    outline-color: #f8b477;
+}
 
 
 #persona.compacto {
@@ -126,4 +133,9 @@
 
 #persona #foto{
     transition: height 0.3s ease-in-out;
+}
+
+.en-edicion {
+    background-color: rgb(255, 244, 221);
+    border-color: rgb(230, 111, 31);
 }

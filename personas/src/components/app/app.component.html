@@ -1,7 +1,7 @@
 <h1> Aplicación de personas </h1>
 
 <div style="width:400px;">
-
+<!--
 <formulario></formulario>
  
                 <listado-personas
@@ -21,15 +21,18 @@
 <persona datos="1" modo="compacto"></persona>
 <persona datos="1" modo="extendido"></persona>
 <persona datos="1" modo="extensible" [extendidoInicialmente]="true"></persona>
+<persona datos="-19"></persona>
+-->
 <persona 
         datos="1" 
-        modo="extensible" 
+        modo="extendido" 
         [extendidoInicialmente]="false" 
         [seleccionable]="true" 
-        [seleccionadoInicialmente]="true"
+        [editable]="true" 
+        [seleccionadoInicialmente]="false"
         (seleccionado)="this.hanSeleccionaAAlguien($event)"
         (deseleccionado)="this.hanDeseleccionadoAAlguien($event)"
                 ></persona>
-<persona datos="-19"></persona>
 
-</div>
+                <persona datos="2" modo="extendido"></persona>
+        </div>

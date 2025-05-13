@@ -3,4 +3,6 @@ import { DatosPersonaSegunElBackend } from "../models/persona.model";
 
 export abstract class PersonasMapper{
     abstract personaBackend2persona(personaBackend: DatosPersonaSegunElBackend): DatosPersona;
+    abstract persona2personaBackend(personaBackend: DatosPersona): DatosPersonaSegunElBackend;
+    
 }

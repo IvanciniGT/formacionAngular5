@@ -10,6 +10,9 @@ class PersonasMapperV1Impl extends PersonasMapper {
     personaBackend2persona(datosPersona: DatosPersonaSegunElBackend): DatosPersona {
         return datosPersona;
     }
+    persona2personaBackend(datosPersona: DatosPersona): DatosPersonaSegunElBackend {
+        return datosPersona;
+    }
 }
 
 export const providePersonasMapper = {

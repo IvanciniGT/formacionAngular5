@@ -1,25 +1,25 @@
 {
-    "personas": [
-        {
-            "id": "1",
-            "nombre": "Menchu",
-            "foto": "https://media.gettyimages.com/id/2153366177/es/foto/guatemalan-nobel-peace-prize-laureate-rigoberta-menchu-gestures-during-the-xix-meeting-of.jpg?s=2048x2048&w=gi&k=20&c=PgTWUFnIy68kq8-fQQW1OZNizbES-OSoVmKBnNu93sA=",
-            "telefono": "666 666 666",
-            "email": "menchu@example.com"
-        },
-        {
-            "id": "2",
-            "nombre": "Javier",
-            "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
-            "telefono": "666 666 666",
-            "email": "javier@example.com"
-        },
-        {
-            "id": "3",
-            "nombre": "Federico",
-            "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
-            "telefono": "666 666 666",  
-            "email": "federico@example.com"
-        }   
-    ]
+  "personas": [
+    {
+      "id": "1",
+      "nombre": "Ivan",
+      "foto": "https://media.gettyimages.com/id/2153366177/es/foto/guatemalan-nobel-peace-prize-laureate-rigoberta-menchu-gestures-during-the-xix-meeting-of.jpg?s=2048x2048&w=gi&k=20&c=PgTWUFnIy68kq8-fQQW1OZNizbES-OSoVmKBnNu93sA=",
+      "telefono": "666 666 666",
+      "email": "menchu@example.com"
+    },
+    {
+      "id": "2",
+      "nombre": "Javier",
+      "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
+      "telefono": "666 666 666",
+      "email": "javier@example.com"
+    },
+    {
+      "id": "3",
+      "nombre": "Federico",
+      "foto": "https://i.pinimg.com/564x/4c/0f/8b/4c0f8b1a2d3e5a7e6d9f3b5e2c1f3a7b.jpg",
+      "telefono": "666 666 666",
+      "email": "federico@example.com"
+    }
+  ]
 }

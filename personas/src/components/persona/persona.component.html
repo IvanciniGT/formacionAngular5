@@ -4,20 +4,48 @@
     </div>
 }
 @else if (this.estado === this.ESTADOS.DESELECCIONADO || 
+          this.estado === this.ESTADOS.EN_EDICION || 
+          this.estado === this.ESTADOS.EN_ESPERA_DE_GUARDADO || 
           this.estado === this.ESTADOS.SELECCIONADO){
         <div id="persona" 
             [ngClass]="{
                 'extendido':    this.estaExtendido, 
                 'compacto':     !this.estaExtendido, 
                 'seleccionado': this.estado === this.ESTADOS.SELECCIONADO,
-                'seleccionable': this.seleccionable
+                'seleccionable': this.seleccionable,
+                'en-edicion':   this.estado === this.ESTADOS.EN_EDICION
             }" 
-            (click)="this.seleccionable && this.toogleSeleccionado()">
+            (click)="this.seleccionable && this.toogleSeleccionado()"
+            >
             <img [src]="this.datosPersona.foto" alt="Avatar" id="foto"/>
-            <div id="nombre">{{this.datosPersona.nombre}}</div>
-            @if (this.estaExtendido){
-                <div id="email">{{this.datosPersona.email}}</div>
-                <div id="telefono">{{this.datosPersona.telefono}}</div>
+            @if(this.estado === this.ESTADOS.EN_EDICION || this.estado === this.ESTADOS.EN_ESPERA_DE_GUARDADO){
+                <div id="nombre">   
+                    <input 
+                    (keyup.enter)="guardarDatos()"
+                    (keyup.esc)="cancelarEdicion()"
+                    (focusout)="guardarDatos()"
+                    [disabled]="this.estado === this.ESTADOS.EN_ESPERA_DE_GUARDADO"
+                    [(ngModel)]="this.datosPersonaEnEdicion!.nombre"/></div>
+                <div id="email">   
+                    <input 
+                    (keyup.enter)="guardarDatos()"
+                    (keyup.esc)="cancelarEdicion()"
+                    (focusout)="guardarDatos()"
+                    [disabled]="this.estado === this.ESTADOS.EN_ESPERA_DE_GUARDADO"
+                    [(ngModel)]="this.datosPersonaEnEdicion!.email"/></div>
+                <div id="telefono">   
+                    <input 
+                    (keyup.enter)="guardarDatos()"
+                    (keyup.esc)="cancelarEdicion()"
+                    (focusout)="guardarDatos()"
+                    [disabled]="this.estado === this.ESTADOS.EN_ESPERA_DE_GUARDADO"
+                    [(ngModel)]="this.datosPersonaEnEdicion!.telefono"/></div>
+            }@else {
+                <div id="nombre" (dblclick)="this.editable && this.iniciarEdicion($event)">{{this.datosPersona.nombre}}</div>
+                @if (this.estaExtendido){
+                    <div id="email" (dblclick)="this.editable && this.iniciarEdicion($event)">{{this.datosPersona.email}}</div>
+                    <div id="telefono" (dblclick)="this.editable && this.iniciarEdicion($event)">{{this.datosPersona.telefono}}</div>
+                }
             }
             @if (this.isExtensible()){
                 <button (click)="this.toogleModo();$event.stopPropagation();">bbb</button>

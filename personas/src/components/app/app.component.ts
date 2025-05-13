@@ -42,9 +42,9 @@ export class AppComponent {
   }
 
   hanDeseleccionadoAAlguien($event: DatosPersona) {
-    console.log('Desmarcado', $event);
+    //console.log('Desmarcado', $event);
   }
   hanSeleccionaAAlguien($event: DatosPersona) {
-    console.log('Marcado', $event);
+    //console.log('Marcado', $event);
   }
 }
